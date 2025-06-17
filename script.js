@@ -1506,7 +1506,7 @@ function downloadReportsCSV() {
     // Check if Papa Parse is available for better CSV generation
     if (typeof Papa !== 'undefined') {
         generateAdvancedCSV(reportsData);
-    } else {
+                    } else {
         generateBasicCSV(reportsData);
     }
 }
@@ -1756,4 +1756,226 @@ function generateBasicReportPDF() {
     
     doc.save('vetsync-basic-report.pdf');
     showToast('Basic PDF report downloaded successfully!', 'success');
-} 
+}
+
+// File Upload Functions
+function handlePatientFileUpload(event) {
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
+    
+    const filesList = document.getElementById('patient-files-list');
+    
+    // Show upload progress
+    showUploadProgress(files);
+    
+    // Process each file
+    Array.from(files).forEach((file, index) => {
+        // Simulate upload delay
+        setTimeout(() => {
+            addFileToList(file, filesList);
+            updateUploadProgress(index + 1, files.length);
+        }, (index + 1) * 500);
+    });
+    
+    // Clear the input
+    event.target.value = '';
+}
+
+function addFileToList(file, container) {
+    const fileElement = document.createElement('div');
+    fileElement.className = 'file-item';
+    
+    const fileIcon = getFileIcon(file.type);
+    const fileSize = formatFileSize(file.size);
+    const uploadDate = new Date().toLocaleDateString();
+    
+    fileElement.innerHTML = `
+        <div class="file-icon">
+            <i class="${fileIcon}"></i>
+        </div>
+        <div class="file-info">
+            <div class="file-name">${file.name}</div>
+            <div class="file-meta">${fileSize} • ${uploadDate} • Uploaded by Admin</div>
+        </div>
+        <div class="file-actions">
+            <button class="btn-icon" onclick="viewFile('${file.name}')" title="View">
+                <i class="fas fa-eye"></i>
+            </button>
+            <button class="btn-icon" onclick="downloadFile('${file.name}')" title="Download">
+                <i class="fas fa-download"></i>
+            </button>
+            <button class="btn-icon delete" onclick="deleteFile(this)" title="Delete">
+                <i class="fas fa-trash"></i>
+            </button>
+        </div>
+    `;
+    
+    // Add fade-in animation
+    fileElement.style.opacity = '0';
+    fileElement.style.transform = 'translateY(20px)';
+    container.appendChild(fileElement);
+    
+    // Animate in
+        setTimeout(() => {
+        fileElement.style.transition = 'all 0.3s ease';
+        fileElement.style.opacity = '1';
+        fileElement.style.transform = 'translateY(0)';
+    }, 100);
+}
+
+function getFileIcon(fileType) {
+    if (fileType.includes('pdf')) return 'fas fa-file-pdf';
+    if (fileType.includes('image')) return 'fas fa-file-image';
+    if (fileType.includes('word') || fileType.includes('document')) return 'fas fa-file-alt';
+    return 'fas fa-file';
+}
+
+function formatFileSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
+function showUploadProgress(files) {
+    // Remove any existing progress container
+    const existingProgress = document.getElementById('upload-progress');
+    if (existingProgress) {
+        existingProgress.remove();
+    }
+    
+    const progressContainer = document.createElement('div');
+    progressContainer.className = 'upload-progress';
+    progressContainer.id = 'upload-progress';
+    
+    const fileCount = files ? files.length : 0;
+    
+    progressContainer.innerHTML = `
+        <div class="progress-item">
+            <div class="progress-info">
+                <div class="progress-name">Uploading 0/${fileCount} files...</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+            <div class="progress-status">0%</div>
+        </div>
+    `;
+    
+    const uploadArea = document.querySelector('.file-upload-area');
+    if (uploadArea) {
+        uploadArea.appendChild(progressContainer);
+    }
+}
+
+function updateUploadProgress(completed, total) {
+    const progressContainer = document.getElementById('upload-progress');
+    if (!progressContainer) return;
+    
+    // Ensure we have valid numbers
+    const completedNum = Number(completed) || 0;
+    const totalNum = Number(total) || 1;
+    
+    // Calculate percentage safely
+    let percentage = 0;
+    if (totalNum > 0) {
+        percentage = Math.round((completedNum / totalNum) * 100);
+        percentage = Math.min(percentage, 100); // Cap at 100%
+    }
+    
+    const progressFill = progressContainer.querySelector('.progress-fill');
+    const progressStatus = progressContainer.querySelector('.progress-status');
+    const progressName = progressContainer.querySelector('.progress-name');
+    
+    if (progressFill) progressFill.style.width = percentage + '%';
+    if (progressStatus) progressStatus.textContent = percentage + '%';
+    
+    // Update progress text
+    if (progressName) {
+        if (completedNum < totalNum) {
+            progressName.textContent = `Uploading ${completedNum}/${totalNum} files...`;
+        } else {
+            progressName.textContent = 'Upload completed!';
+        }
+    }
+    
+    // Check if completed
+    if (completedNum >= totalNum) {
+        // Remove progress after 2 seconds
+        setTimeout(() => {
+            if (progressContainer) {
+                progressContainer.style.opacity = '0';
+                progressContainer.style.transform = 'translateY(-10px)';
+                setTimeout(() => {
+                    if (progressContainer.parentNode) {
+                        progressContainer.parentNode.removeChild(progressContainer);
+                    }
+        }, 300);
+            }
+        }, 1500);
+        
+        showToast(`Successfully uploaded ${totalNum} file${totalNum > 1 ? 's' : ''}!`, 'success');
+    }
+}
+
+function viewFile(filename) {
+    showToast(`Opening ${filename} for viewing...`, 'info');
+    // In a real app, this would open the file in a viewer
+}
+
+function downloadFile(filename) {
+    showToast(`Downloading ${filename}...`, 'info');
+    // In a real app, this would trigger file download
+}
+
+function deleteFile(button) {
+    const fileItem = button.closest('.file-item');
+    const filename = fileItem.querySelector('.file-name').textContent;
+    
+    if (confirm(`Are you sure you want to delete ${filename}?`)) {
+        fileItem.style.opacity = '0';
+        fileItem.style.transform = 'translateY(-20px)';
+        
+        setTimeout(() => {
+            if (fileItem.parentNode) {
+                fileItem.parentNode.removeChild(fileItem);
+            }
+        }, 300);
+        
+        showToast(`${filename} has been deleted.`, 'success');
+    }
+}
+
+// Add drag and drop functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const uploadZone = document.querySelector('.upload-zone');
+    if (!uploadZone) return;
+    
+    uploadZone.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        uploadZone.classList.add('dragover');
+    });
+    
+    uploadZone.addEventListener('dragleave', function(e) {
+        e.preventDefault();
+        uploadZone.classList.remove('dragover');
+    });
+    
+    uploadZone.addEventListener('drop', function(e) {
+        e.preventDefault();
+        uploadZone.classList.remove('dragover');
+        
+        const files = e.dataTransfer.files;
+        const fileInput = document.getElementById('patient-file-input');
+        
+        // Create a new file list and trigger upload
+        const dt = new DataTransfer();
+        Array.from(files).forEach(file => dt.items.add(file));
+        fileInput.files = dt.files;
+        
+        // Trigger the change event
+        const event = new Event('change', { bubbles: true });
+        fileInput.dispatchEvent(event);
+    });
+}); 

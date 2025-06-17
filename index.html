@@ -1020,6 +1020,7 @@
                     <button class="tab-button active" onclick="showTab('profile')">Profile</button>
                     <button class="tab-button" onclick="showTab('history')">History</button>
                     <button class="tab-button" onclick="showTab('prescriptions')">Prescriptions</button>
+                    <button class="tab-button" onclick="showTab('files')">Files</button>
                 </div>
 
                 <div id="profile-tab" class="tab-content active">
@@ -1101,6 +1102,75 @@
                                 </tr>
                             </tbody>
                         </table>
+                    </div>
+                </div>
+
+                <div id="files-tab" class="tab-content">
+                    <div class="files-section">
+                        <div class="file-upload-area">
+                            <div class="upload-zone" onclick="document.getElementById('patient-file-input').click()">
+                                <div class="upload-icon">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <div class="upload-text">
+                                    <h4>Upload Medical Files</h4>
+                                    <p>Click here or drag & drop files to upload</p>
+                                    <small>Supported: PDF, JPG, PNG, DOC (Max 10MB each)</small>
+                                </div>
+                            </div>
+                            <input type="file" id="patient-file-input" multiple 
+                                   accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" 
+                                   style="display: none;" 
+                                   onchange="handlePatientFileUpload(event)">
+                        </div>
+
+                        <div class="uploaded-files-container">
+                            <h4>Medical Documents</h4>
+                            <div id="patient-files-list" class="files-list">
+                                <!-- Mock existing files -->
+                                <div class="file-item">
+                                    <div class="file-icon">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </div>
+                                    <div class="file-info">
+                                        <div class="file-name">Blood_Test_Results_Dec2024.pdf</div>
+                                        <div class="file-meta">2.4 MB • Dec 15, 2024 • Dr. Smith</div>
+                                    </div>
+                                    <div class="file-actions">
+                                        <button class="btn-icon" onclick="viewFile('blood-test')" title="View">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn-icon" onclick="downloadFile('blood-test')" title="Download">
+                                            <i class="fas fa-download"></i>
+                                        </button>
+                                        <button class="btn-icon delete" onclick="deleteFile('blood-test')" title="Delete">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="file-item">
+                                    <div class="file-icon">
+                                        <i class="fas fa-file-image"></i>
+                                    </div>
+                                    <div class="file-info">
+                                        <div class="file-name">X-Ray_Chest_Jun2024.jpg</div>
+                                        <div class="file-meta">1.8 MB • Jun 10, 2024 • Dr. Williams</div>
+                                    </div>
+                                    <div class="file-actions">
+                                        <button class="btn-icon" onclick="viewFile('xray')" title="View">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn-icon" onclick="downloadFile('xray')" title="Download">
+                                            <i class="fas fa-download"></i>
+                                        </button>
+                                        <button class="btn-icon delete" onclick="deleteFile('xray')" title="Delete">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
