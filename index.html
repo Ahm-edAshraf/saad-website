@@ -8,6 +8,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- PDF and CSV Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Papa-parse/5.4.1/papaparse.min.js"></script>
 </head>
 <body>
     <!-- Login Screen -->
@@ -261,7 +265,7 @@
             <div id="patients-content" class="content-screen">
                 <div class="page-header">
                     <h1>Patient Records</h1>
-                    <button class="btn btn-primary" onclick="openModal('new-patient-modal')">
+                    <button class="btn btn-primary" onclick="addNewPatient()">
                         <i class="fas fa-plus"></i> Add Patient
                     </button>
                 </div>
@@ -415,10 +419,10 @@
                     </div>
 
                     <div class="invoice-actions">
-                        <button class="btn btn-secondary">
+                        <button class="btn btn-secondary" onclick="generatePDF()">
                             <i class="fas fa-file-pdf"></i> Generate PDF
                         </button>
-                        <button class="btn btn-primary">
+                        <button class="btn btn-primary" onclick="sendEmail()">
                             <i class="fas fa-envelope"></i> Send to Email
                         </button>
                     </div>
@@ -429,7 +433,7 @@
             <div id="inventory-content" class="content-screen">
                 <div class="page-header">
                     <h1>Inventory Management</h1>
-                    <button class="btn btn-primary" onclick="openModal('add-item-modal')">
+                    <button class="btn btn-primary" onclick="addNewInventoryItem()">
                         <i class="fas fa-plus"></i> Add Item
                     </button>
                 </div>
@@ -577,10 +581,10 @@
                 </div>
 
                 <div class="export-actions">
-                    <button class="btn btn-secondary">
+                    <button class="btn btn-secondary" onclick="downloadReportsCSV()">
                         <i class="fas fa-file-csv"></i> Download CSV
                     </button>
-                    <button class="btn btn-secondary">
+                    <button class="btn btn-secondary" onclick="downloadReportsPDF()">
                         <i class="fas fa-file-pdf"></i> Download PDF
                     </button>
                 </div>
@@ -747,7 +751,7 @@
                                                 Vaccination
                                             </div>
                                         </div>
-                                        <div class="record-details">
+                                        <div clas   s="record-details">
                                             <p><strong>Procedure:</strong> Rabies vaccine administered</p>
                                             <p><strong>Veterinarian:</strong> Dr. Smith</p>
                                             <p><strong>Notes:</strong> Healthy condition, no adverse reactions</p>
@@ -997,7 +1001,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-ghost" onclick="closeModal('new-appointment-modal')">Cancel</button>
-                <button class="btn btn-primary">Save Appointment</button>
+                <button class="btn btn-primary" onclick="saveNewAppointment()">Save Appointment</button>
             </div>
         </div>
     </div>
@@ -1041,7 +1045,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Date of Birth</label>
-                                <input type="date" class="form-control" value="2021-03-15">
+                                <input type="date" class="form-control" value="2021-03-15" min="1900-01-01" max="2030-12-31">
                             </div>
                         </div>
                         <div class="form-group">
@@ -1074,7 +1078,7 @@
 
                 <div id="prescriptions-tab" class="tab-content">
                     <div class="prescriptions-section">
-                        <button class="btn btn-primary mb-3" onclick="openModal('add-prescription-modal')">
+                        <button class="btn btn-primary mb-3" onclick="addNewPrescription()">
                             <i class="fas fa-plus"></i> Add Prescription
                         </button>
                         <table class="prescriptions-table">
@@ -1102,7 +1106,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-ghost" onclick="closeModal('patient-detail-modal')">Close</button>
-                <button class="btn btn-primary">Save Changes</button>
+                <button class="btn btn-primary" onclick="savePatientChanges()">Save Changes</button>
             </div>
         </div>
     </div>

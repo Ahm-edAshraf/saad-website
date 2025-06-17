@@ -1444,6 +1444,16 @@ p {
     border: 1px solid var(--border);
     border-radius: var(--radius-md);
     padding: var(--spacing-xl);
+    height: 400px;
+    max-height: 400px;
+    overflow: hidden;
+    position: relative;
+}
+
+.chart-container canvas {
+    max-height: 350px !important;
+    height: 350px !important;
+    width: 100% !important;
 }
 
 .chart-container:last-child {
