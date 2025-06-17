@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VetSync VCMS - Veterinary Clinic Management System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="login-screen" class="screen active">
+        <div class="login-container">
+            <div class="login-card">
+                <div class="login-header">
+                    <div class="logo">
+                        <i class="fas fa-paw"></i>
+                        <span>VetSync</span>
+                    </div>
+                </div>
+                <form class="login-form">
+                    <div class="form-group">
+                        <div class="input-container">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" placeholder="Email address" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-container">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="password" placeholder="Password" required>
+                            <button type="button" class="password-toggle" onclick="togglePassword()">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <a href="#" class="forgot-password" onclick="forgotPassword()">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="btn btn-primary full-width" onclick="login(event)">Log In</button>
+                </form>
+                <div class="login-footer">
+                    <span>Don't have an account? </span>
+                    <a href="#" class="text-button" onclick="signUp()">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="main-app" class="screen">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <div class="logo">
+                    <i class="fas fa-paw"></i>
+                    <span>VetSync</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="user-menu">
+                    <div class="user-avatar">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <div class="user-dropdown">
+                        <button onclick="logout()">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <ul class="nav-menu">
+                <li><a href="#" onclick="showScreen('dashboard')" class="nav-link active">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a></li>
+                <li><a href="#" onclick="showScreen('appointments')" class="nav-link">
+                    <i class="fas fa-calendar-check"></i> Appointments
+                </a></li>
+                <li><a href="#" onclick="showScreen('patients')" class="nav-link">
+                    <i class="fas fa-paw"></i> Patient Records
+                </a></li>
+                <li><a href="#" onclick="showScreen('billing')" class="nav-link">
+                    <i class="fas fa-file-invoice-dollar"></i> Billing
+                </a></li>
+                <li><a href="#" onclick="showScreen('inventory')" class="nav-link">
+                    <i class="fas fa-boxes"></i> Inventory
+                </a></li>
+                <li><a href="#" onclick="showScreen('reports')" class="nav-link">
+                    <i class="fas fa-chart-bar"></i> Reports
+                </a></li>
+                <li><a href="#" onclick="showScreen('pet-portal')" class="nav-link">
+                    <i class="fas fa-mobile-alt"></i> Pet Portal
+                </a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Screen -->
+            <div id="dashboard-content" class="content-screen active">
+                <div class="page-header">
+                    <h1>Dashboard</h1>
+                    <p>Welcome to Dr. Wah Veterinary Clinic Management System</p>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-calendar-day"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Today's Appointments</h3>
+                            <div class="stat-number">12</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-paw"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Active Patients</h3>
+                            <div class="stat-number">247</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Monthly Revenue</h3>
+                            <div class="stat-number">RM 15,420</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Low Stock Items</h3>
+                            <div class="stat-number">3</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <h2>Quick Actions</h2>
+                    <div class="action-buttons">
+                        <button class="action-btn" onclick="showScreen('appointments')">
+                            <i class="fas fa-plus"></i>
+                            <span>New Appointment</span>
+                        </button>
+                        <button class="action-btn" onclick="showScreen('patients')">
+                            <i class="fas fa-search"></i>
+                            <span>View Records</span>
+                        </button>
+                        <button class="action-btn" onclick="showScreen('billing')">
+                            <i class="fas fa-file-invoice"></i>
+                            <span>Generate Invoice</span>
+                        </button>
+                        <button class="action-btn" onclick="showScreen('inventory')">
+                            <i class="fas fa-box"></i>
+                            <span>Check Inventory</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Alerts Panel -->
+                <div class="alerts-panel">
+                    <h2>Alerts & Notifications</h2>
+                    <div class="alert-item">
+                        <i class="fas fa-exclamation-triangle text-warning"></i>
+                        <span>Low stock: Antibiotics (5 units remaining)</span>
+                        <button class="btn btn-small">Reorder</button>
+                    </div>
+                    <div class="alert-item">
+                        <i class="fas fa-exclamation-triangle text-warning"></i>
+                        <span>Low stock: Vaccines (2 units remaining)</span>
+                        <button class="btn btn-small">Reorder</button>
+                    </div>
+                    <div class="alert-item">
+                        <i class="fas fa-bell text-primary"></i>
+                        <span>Appointment reminder: Fluffy - 2:00 PM today</span>
+                        <button class="btn btn-small">View</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Appointments Screen -->
+            <div id="appointments-content" class="content-screen">
+                <div class="page-header">
+                    <h1>Appointment Scheduling</h1>
+                    <button class="btn btn-primary" onclick="openModal('new-appointment-modal')">
+                        <i class="fas fa-plus"></i> New Appointment
+                    </button>
+                </div>
+
+                <div class="appointments-layout">
+                    <div class="calendar-section">
+                        <div class="calendar-widget">
+                            <div class="calendar-header">
+                                <button class="btn btn-ghost" onclick="previousMonth()">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <h3 id="calendar-month">December 2024</h3>
+                                <button class="btn btn-ghost" onclick="nextMonth()">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-grid" id="calendar-grid">
+                                <!-- Calendar will be generated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="appointments-list">
+                        <h3>Today's Appointments</h3>
+                        <div class="appointment-item">
+                            <div class="appointment-time">9:00 AM</div>
+                            <div class="appointment-details">
+                                <div class="pet-name">Fluffy (Cat)</div>
+                                <div class="owner-name">Mrs. Johnson</div>
+                                <div class="vet-name">Dr. Smith</div>
+                            </div>
+                            <div class="appointment-status">
+                                <span class="status-badge confirmed">Confirmed</span>
+                            </div>
+                        </div>
+                        <div class="appointment-item">
+                            <div class="appointment-time">10:30 AM</div>
+                            <div class="appointment-details">
+                                <div class="pet-name">Max (Dog)</div>
+                                <div class="owner-name">Mr. Brown</div>
+                                <div class="vet-name">Dr. Williams</div>
+                            </div>
+                            <div class="appointment-status">
+                                <span class="status-badge pending">Pending</span>
+                            </div>
+                        </div>
+                        <div class="appointment-item">
+                            <div class="appointment-time">2:00 PM</div>
+                            <div class="appointment-details">
+                                <div class="pet-name">Bella (Rabbit)</div>
+                                <div class="owner-name">Ms. Davis</div>
+                                <div class="vet-name">Dr. Smith</div>
+                            </div>
+                            <div class="appointment-status">
+                                <span class="status-badge confirmed">Confirmed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Patient Records Screen -->
+            <div id="patients-content" class="content-screen">
+                <div class="page-header">
+                    <h1>Patient Records</h1>
+                    <button class="btn btn-primary" onclick="openModal('new-patient-modal')">
+                        <i class="fas fa-plus"></i> Add Patient
+                    </button>
+                </div>
+
+                <div class="search-filters">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search pets by name or owner..." onkeyup="searchPatients(this.value)">
+                    </div>
+                    <select class="filter-select">
+                        <option>All Species</option>
+                        <option>Dogs</option>
+                        <option>Cats</option>
+                        <option>Birds</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+
+                <div class="patients-grid" id="patients-grid">
+                    <div class="patient-card" onclick="openPatientDetail('fluffy')">
+                        <div class="patient-avatar">
+                            <i class="fas fa-cat"></i>
+                        </div>
+                        <div class="patient-info">
+                            <h3>Fluffy</h3>
+                            <p>Persian Cat • 3 years old</p>
+                            <p class="owner">Owner: Mrs. Johnson</p>
+                            <div class="last-visit">Last visit: Dec 15, 2024</div>
+                        </div>
+                        <div class="patient-status">
+                            <span class="status-badge healthy">Healthy</span>
+                        </div>
+                    </div>
+
+                    <div class="patient-card" onclick="openPatientDetail('max')">
+                        <div class="patient-avatar">
+                            <i class="fas fa-dog"></i>
+                        </div>
+                        <div class="patient-info">
+                            <h3>Max</h3>
+                            <p>Golden Retriever • 5 years old</p>
+                            <p class="owner">Owner: Mr. Brown</p>
+                            <div class="last-visit">Last visit: Dec 10, 2024</div>
+                        </div>
+                        <div class="patient-status">
+                            <span class="status-badge treatment">Under Treatment</span>
+                        </div>
+                    </div>
+
+                    <div class="patient-card" onclick="openPatientDetail('bella')">
+                        <div class="patient-avatar">
+                            <i class="fas fa-rabbit-fast"></i>
+                        </div>
+                        <div class="patient-info">
+                            <h3>Bella</h3>
+                            <p>Holland Lop Rabbit • 2 years old</p>
+                            <p class="owner">Owner: Ms. Davis</p>
+                            <div class="last-visit">Last visit: Dec 8, 2024</div>
+                        </div>
+                        <div class="patient-status">
+                            <span class="status-badge healthy">Healthy</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Billing Screen -->
+            <div id="billing-content" class="content-screen">
+                <div class="page-header">
+                    <h1>Billing & Invoicing</h1>
+                    <button class="btn btn-primary" onclick="createNewInvoice()">
+                        <i class="fas fa-plus"></i> New Invoice
+                    </button>
+                </div>
+
+                <div class="invoice-container">
+                    <div class="invoice-header">
+                        <div class="clinic-info">
+                            <h2>Dr. Wah Veterinary Clinic</h2>
+                            <p>123 Pet Street, Animal City</p>
+                            <p>Phone: (555) 123-4567</p>
+                        </div>
+                        <div class="invoice-details">
+                            <h3>Invoice #INV-2024-001</h3>
+                            <p>Date: December 20, 2024</p>
+                            <p>Due Date: January 20, 2025</p>
+                        </div>
+                    </div>
+
+                    <div class="client-info">
+                        <h3>Bill To:</h3>
+                        <p>Mrs. Johnson</p>
+                        <p>456 Owner Avenue</p>
+                        <p>Pet Town, PC 12345</p>
+                        <p>Phone: (555) 987-6543</p>
+                    </div>
+
+                    <div class="invoice-items">
+                        <table class="invoice-table">
+                            <thead>
+                                <tr>
+                                    <th>Service</th>
+                                    <th>Qty</th>
+                                    <th>Unit Price</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Consultation</td>
+                                    <td>1</td>
+                                    <td>RM 50.00</td>
+                                    <td>RM 50.00</td>
+                                </tr>
+                                <tr>
+                                    <td>Vaccination - Rabies</td>
+                                    <td>1</td>
+                                    <td>RM 80.00</td>
+                                    <td>RM 80.00</td>
+                                </tr>
+                                <tr>
+                                    <td>Blood Test</td>
+                                    <td>1</td>
+                                    <td>RM 120.00</td>
+                                    <td>RM 120.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="invoice-totals">
+                        <div class="totals-section">
+                            <div class="total-line">
+                                <span>Subtotal:</span>
+                                <span>RM 250.00</span>
+                            </div>
+                            <div class="total-line">
+                                <span>Tax (6%):</span>
+                                <span>RM 15.00</span>
+                            </div>
+                            <div class="total-line">
+                                <span>Discount:</span>
+                                <input type="number" class="discount-input" placeholder="0" onchange="calculateTotal()">
+                                <span>RM 0.00</span>
+                            </div>
+                            <div class="total-line grand-total">
+                                <span>Grand Total:</span>
+                                <span id="grand-total">RM 265.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="invoice-actions">
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-file-pdf"></i> Generate PDF
+                        </button>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-envelope"></i> Send to Email
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inventory Screen -->
+            <div id="inventory-content" class="content-screen">
+                <div class="page-header">
+                    <h1>Inventory Management</h1>
+                    <button class="btn btn-primary" onclick="openModal('add-item-modal')">
+                        <i class="fas fa-plus"></i> Add Item
+                    </button>
+                </div>
+
+                <div class="inventory-filters">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search inventory..." onkeyup="searchInventory(this.value)">
+                    </div>
+                    <select class="filter-select">
+                        <option>All Categories</option>
+                        <option>Medications</option>
+                        <option>Vaccines</option>
+                        <option>Supplies</option>
+                        <option>Equipment</option>
+                    </select>
+                </div>
+
+                <div class="inventory-table-container">
+                    <table class="inventory-table">
+                        <thead>
+                            <tr>
+                                <th>Item ID</th>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Qty on Hand</th>
+                                <th>Reorder Level</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>MED001</td>
+                                <td>Antibiotics - Amoxicillin</td>
+                                <td>Medications</td>
+                                <td class="editable-qty" onclick="editQty(this)">5</td>
+                                <td class="editable-reorder" onclick="editReorder(this)">20</td>
+                                <td><span class="status-badge low-stock">Low Stock</span></td>
+                                <td>
+                                    <button class="btn btn-small btn-ghost">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-small btn-danger">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>VAC002</td>
+                                <td>Rabies Vaccine</td>
+                                <td>Vaccines</td>
+                                <td class="editable-qty" onclick="editQty(this)">2</td>
+                                <td class="editable-reorder" onclick="editReorder(this)">10</td>
+                                <td><span class="status-badge low-stock">Low Stock</span></td>
+                                <td>
+                                    <button class="btn btn-small btn-ghost">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-small btn-danger">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>SUP003</td>
+                                <td>Surgical Gloves</td>
+                                <td>Supplies</td>
+                                <td class="editable-qty" onclick="editQty(this)">150</td>
+                                <td class="editable-reorder" onclick="editReorder(this)">50</td>
+                                <td><span class="status-badge in-stock">In Stock</span></td>
+                                <td>
+                                    <button class="btn btn-small btn-ghost">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-small btn-danger">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>EQP004</td>
+                                <td>Digital Thermometer</td>
+                                <td>Equipment</td>
+                                <td class="editable-qty" onclick="editQty(this)">8</td>
+                                <td class="editable-reorder" onclick="editReorder(this)">3</td>
+                                <td><span class="status-badge in-stock">In Stock</span></td>
+                                <td>
+                                    <button class="btn btn-small btn-ghost">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-small btn-danger">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Reports Screen -->
+            <div id="reports-content" class="content-screen">
+                <div class="page-header">
+                    <h1>Reports & Analytics</h1>
+                    <div class="date-range-picker">
+                        <input type="date" value="2024-01-01">
+                        <span>to</span>
+                        <input type="date" value="2024-12-31">
+                        <button class="btn btn-primary">Update</button>
+                    </div>
+                </div>
+
+                <div class="reports-summary">
+                    <div class="summary-card">
+                        <h3>Total Appointments</h3>
+                        <div class="summary-number">1,247</div>
+                        <div class="summary-change positive">+12% from last year</div>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Total Revenue</h3>
+                        <div class="summary-number">RM 185,420</div>
+                        <div class="summary-change positive">+8% from last year</div>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Average Invoice</h3>
+                        <div class="summary-number">RM 148.72</div>
+                        <div class="summary-change negative">-3% from last year</div>
+                    </div>
+                </div>
+
+                <div class="charts-section">
+                    <div class="chart-container">
+                        <h3>Appointments per Month</h3>
+                        <canvas id="appointments-chart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Revenue Trend</h3>
+                        <canvas id="revenue-chart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Top 5 Medications by Usage</h3>
+                        <canvas id="medications-chart"></canvas>
+                    </div>
+                </div>
+
+                <div class="export-actions">
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-file-csv"></i> Download CSV
+                    </button>
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-file-pdf"></i> Download PDF
+                    </button>
+                </div>
+            </div>
+
+            <!-- Pet Portal Screen -->
+            <div id="pet-portal-content" class="content-screen">
+                <div class="page-header">
+                    <h1>Pet Owner Portal</h1>
+                    <p>Mobile-optimized view for pet owners</p>
+                </div>
+
+                <div class="mobile-preview">
+                    <div class="mobile-frame">
+                        <div class="mobile-header">
+                            <button class="btn btn-ghost">
+                                <i class="fas fa-arrow-left"></i>
+                            </button>
+                            <h2>My Pets</h2>
+                            <button class="btn btn-ghost">
+                                <i class="fas fa-user"></i>
+                            </button>
+                        </div>
+
+                        <div class="mobile-content">
+                            <!-- Home Tab -->
+                            <div id="mobile-home-tab" class="mobile-tab-content active">
+                                <div class="pet-overview">
+                                    <div class="pet-card-mobile">
+                                        <div class="pet-avatar-mobile">
+                                            <i class="fas fa-cat"></i>
+                                        </div>
+                                        <div class="pet-info-mobile">
+                                            <h3>Fluffy</h3>
+                                            <p>Persian Cat • 3 years old</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="upcoming-appointments">
+                                    <h3>Upcoming Appointments</h3>
+                                    <div class="appointment-card-mobile">
+                                        <div class="appointment-date">Dec 25, 2024</div>
+                                        <div class="appointment-details-mobile">
+                                            <div>Dr. Smith</div>
+                                            <div>Annual Checkup</div>
+                                        </div>
+                                        <span class="status-badge confirmed">Confirmed</span>
+                                    </div>
+                                </div>
+
+                                <div class="recent-records">
+                                    <h3>Recent Records</h3>
+                                    <div class="record-summary">
+                                        <div class="record-date">Dec 15, 2024</div>
+                                        <div class="record-details">
+                                            <p><strong>Vaccination:</strong> Rabies vaccine administered</p>
+                                            <p><strong>Notes:</strong> Healthy condition, no concerns</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="reminders">
+                                    <h3>Reminders</h3>
+                                    <div class="reminder-item">
+                                        <div class="reminder-icon">
+                                            <i class="fas fa-syringe"></i>
+                                        </div>
+                                        <div class="reminder-text">
+                                            <div>Booster vaccination due</div>
+                                            <div class="reminder-date">Jan 15, 2025</div>
+                                        </div>
+                                        <input type="checkbox" class="reminder-checkbox">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Appointments Tab -->
+                            <div id="mobile-appointments-tab" class="mobile-tab-content">
+                                <div class="mobile-section">
+                                    <div class="section-header">
+                                        <h3>My Appointments</h3>
+                                        <button class="btn-mobile btn-primary">
+                                            <i class="fas fa-plus"></i>
+                                            Book New
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="appointment-card-mobile">
+                                        <div class="appointment-date">Dec 25, 2024</div>
+                                        <div class="appointment-details-mobile">
+                                            <div class="appointment-title">Annual Checkup</div>
+                                            <div class="appointment-vet">Dr. Smith</div>
+                                            <div class="appointment-time">2:00 PM</div>
+                                        </div>
+                                        <div class="appointment-actions">
+                                            <span class="status-badge confirmed">Confirmed</span>
+                                            <button class="btn-mobile btn-ghost">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="appointment-card-mobile">
+                                        <div class="appointment-date">Jan 15, 2025</div>
+                                        <div class="appointment-details-mobile">
+                                            <div class="appointment-title">Vaccination Booster</div>
+                                            <div class="appointment-vet">Dr. Williams</div>
+                                            <div class="appointment-time">10:30 AM</div>
+                                        </div>
+                                        <div class="appointment-actions">
+                                            <span class="status-badge pending">Pending</span>
+                                            <button class="btn-mobile btn-ghost">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="appointment-card-mobile">
+                                        <div class="appointment-date">Feb 10, 2025</div>
+                                        <div class="appointment-details-mobile">
+                                            <div class="appointment-title">Dental Cleaning</div>
+                                            <div class="appointment-vet">Dr. Johnson</div>
+                                            <div class="appointment-time">9:00 AM</div>
+                                        </div>
+                                        <div class="appointment-actions">
+                                            <span class="status-badge pending">Pending</span>
+                                            <button class="btn-mobile btn-ghost">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mobile-section">
+                                    <h3>Quick Actions</h3>
+                                    <div class="quick-actions-mobile">
+                                        <button class="action-btn-mobile">
+                                            <i class="fas fa-calendar-plus"></i>
+                                            <span>Schedule Appointment</span>
+                                        </button>
+                                        <button class="action-btn-mobile">
+                                            <i class="fas fa-clock"></i>
+                                            <span>Reschedule</span>
+                                        </button>
+                                        <button class="action-btn-mobile">
+                                            <i class="fas fa-times-circle"></i>
+                                            <span>Cancel Appointment</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Records Tab -->
+                            <div id="mobile-records-tab" class="mobile-tab-content">
+                                <div class="mobile-section">
+                                    <h3>Medical Records</h3>
+                                    
+                                    <div class="record-card-mobile">
+                                        <div class="record-header">
+                                            <div class="record-date">Dec 15, 2024</div>
+                                            <div class="record-type">
+                                                <i class="fas fa-syringe"></i>
+                                                Vaccination
+                                            </div>
+                                        </div>
+                                        <div class="record-details">
+                                            <p><strong>Procedure:</strong> Rabies vaccine administered</p>
+                                            <p><strong>Veterinarian:</strong> Dr. Smith</p>
+                                            <p><strong>Notes:</strong> Healthy condition, no adverse reactions</p>
+                                            <p><strong>Next Due:</strong> Dec 15, 2025</p>
+                                        </div>
+                                        <div class="record-actions">
+                                            <button class="btn-mobile btn-ghost">
+                                                <i class="fas fa-download"></i>
+                                                Download
+                                            </button>
+                                            <button class="btn-mobile btn-ghost">
+                                                <i class="fas fa-share"></i>
+                                                Share
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="record-card-mobile">
+                                        <div class="record-header">
+                                            <div class="record-date">Nov 20, 2024</div>
+                                            <div class="record-type">
+                                                <i class="fas fa-stethoscope"></i>
+                                                Checkup
+                                            </div>
+                                        </div>
+                                        <div class="record-details">
+                                            <p><strong>Procedure:</strong> Annual health examination</p>
+                                            <p><strong>Veterinarian:</strong> Dr. Williams</p>
+                                            <p><strong>Weight:</strong> 4.2 kg</p>
+                                            <p><strong>Notes:</strong> Excellent health, all vitals normal</p>
+                                        </div>
+                                        <div class="record-actions">
+                                            <button class="btn-mobile btn-ghost">
+                                                <i class="fas fa-download"></i>
+                                                Download
+                                            </button>
+                                            <button class="btn-mobile btn-ghost">
+                                                <i class="fas fa-share"></i>
+                                                Share
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="record-card-mobile">
+                                        <div class="record-header">
+                                            <div class="record-date">Oct 5, 2024</div>
+                                            <div class="record-type">
+                                                <i class="fas fa-microscope"></i>
+                                                Lab Test
+                                            </div>
+                                        </div>
+                                        <div class="record-details">
+                                            <p><strong>Test:</strong> Blood panel analysis</p>
+                                            <p><strong>Veterinarian:</strong> Dr. Smith</p>
+                                            <p><strong>Results:</strong> All values within normal range</p>
+                                            <p><strong>Notes:</strong> Kidney and liver function excellent</p>
+                                        </div>
+                                        <div class="record-actions">
+                                            <button class="btn-mobile btn-ghost">
+                                                <i class="fas fa-download"></i>
+                                                Download
+                                            </button>
+                                            <button class="btn-mobile btn-ghost">
+                                                <i class="fas fa-share"></i>
+                                                Share
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Profile Tab -->
+                            <div id="mobile-profile-tab" class="mobile-tab-content">
+                                <div class="mobile-section">
+                                    <div class="profile-header">
+                                        <div class="profile-avatar-large">
+                                            <i class="fas fa-cat"></i>
+                                        </div>
+                                        <div class="profile-info">
+                                            <h2>Fluffy</h2>
+                                            <p>Persian Cat • 3 years old</p>
+                                            <span class="status-badge healthy">Healthy</span>
+                                        </div>
+                                        <button class="btn-mobile btn-primary">
+                                            <i class="fas fa-edit"></i>
+                                            Edit
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="mobile-section">
+                                    <h3>Pet Information</h3>
+                                    <div class="info-grid-mobile">
+                                        <div class="info-item">
+                                            <div class="info-label">Breed</div>
+                                            <div class="info-value">Persian</div>
+                                        </div>
+                                        <div class="info-item">
+                                            <div class="info-label">Gender</div>
+                                            <div class="info-value">Female</div>
+                                        </div>
+                                        <div class="info-item">
+                                            <div class="info-label">Weight</div>
+                                            <div class="info-value">4.2 kg< /div>
+                                        </div>
+                                        <div class="info-item">
+                                            <div class="info-label">Date of Birth</div>
+                                            <div class="info-value">March 15, 2021</div>
+                                        </div>
+                                        <div class="info-item">
+                                            <div class="info-label">Microchip ID</div>
+                                            <div class="info-value">982000123456789</div>
+                                        </div>
+                                        <div class="info-item">
+                                            <div class="info-label">Insurance</div>
+                                            <div class="info-value">PetPlan Premium</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mobile-section">
+                                    <h3>Owner Information</h3>
+                                    <div class="owner-info-mobile">
+                                        <div class="owner-avatar">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div class="owner-details">
+                                            <h4>Mrs. Sarah Johnson</h4>
+                                            <p>📞 (555) 987-6543</p>
+                                            <p>📧 sarah.johnson@email.com</p>
+                                            <p>🏠 456 Pet Avenue, Animal City</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mobile-section">
+                                    <h3>Emergency Contact</h3>
+                                    <div class="emergency-contact">
+                                        <div class="contact-item">
+                                            <i class="fas fa-phone-alt"></i>
+                                            <div>
+                                                <div class="contact-name">Mr. John Johnson</div>
+                                                <div class="contact-number">(555) 123-4567</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mobile-section">
+                                    <h3>Quick Actions</h3>
+                                    <div class="profile-actions-mobile">
+                                        <button class="action-btn-mobile">
+                                            <i class="fas fa-user-edit"></i>
+                                            <span>Update Profile</span>
+                                        </button>
+                                        <button class="action-btn-mobile">
+                                            <i class="fas fa-bell"></i>
+                                            <span>Notification Settings</span>
+                                        </button>
+                                        <button class="action-btn-mobile">
+                                            <i class="fas fa-download"></i>
+                                            <span>Download Records</span>
+                                        </button>
+                                        <button class="action-btn-mobile">
+                                            <i class="fas fa-sign-out-alt"></i>
+                                            <span>Sign Out</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mobile-footer">
+                            <button class="footer-nav-item active" onclick="showMobileTab('home')">
+                                <i class="fas fa-home"></i>
+                                <span>Home</span>
+                            </button>
+                            <button class="footer-nav-item" onclick="showMobileTab('appointments')">
+                                <i class="fas fa-calendar"></i>
+                                <span>Appointments</span>
+                            </button>
+                            <button class="footer-nav-item" onclick="showMobileTab('records')">
+                                <i class="fas fa-file-medical"></i>
+                                <span>Records</span>
+                            </button>
+                            <button class="footer-nav-item" onclick="showMobileTab('profile')">
+                                <i class="fas fa-user"></i>
+                                <span>Profile</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <!-- New Appointment Modal -->
+    <div id="new-appointment-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>New Appointment</h2>
+                <button class="modal-close" onclick="closeModal('new-appointment-modal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="appointment-form">
+                    <div class="form-group">
+                        <label>Pet</label>
+                        <select class="form-control">
+                            <option>Select a pet...</option>
+                            <option>Fluffy (Mrs. Johnson)</option>
+                            <option>Max (Mr. Brown)</option>
+                            <option>Bella (Ms. Davis)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Veterinarian</label>
+                        <select class="form-control">
+                            <option>Select veterinarian...</option>
+                            <option>Dr. Smith</option>
+                            <option>Dr. Williams</option>
+                            <option>Dr. Johnson</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Date</label>
+                            <input type="date" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Time</label>
+                            <select class="form-control">
+                                <option>9:00 AM</option>
+                                <option>9:15 AM</option>
+                                <option>9:30 AM</option>
+                                <option>10:00 AM</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Notes</label>
+                        <textarea class="form-control" rows="3" placeholder="Appointment notes..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" onclick="closeModal('new-appointment-modal')">Cancel</button>
+                <button class="btn btn-primary">Save Appointment</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Patient Detail Modal -->
+    <div id="patient-detail-modal" class="modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2>Patient Details - <span id="patient-name">Fluffy</span></h2>
+                <button class="modal-close" onclick="closeModal('patient-detail-modal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="patient-tabs">
+                    <button class="tab-button active" onclick="showTab('profile')">Profile</button>
+                    <button class="tab-button" onclick="showTab('history')">History</button>
+                    <button class="tab-button" onclick="showTab('prescriptions')">Prescriptions</button>
+                </div>
+
+                <div id="profile-tab" class="tab-content active">
+                    <form class="patient-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Pet Name</label>
+                                <input type="text" class="form-control" value="Fluffy">
+                            </div>
+                            <div class="form-group">
+                                <label>Species</label>
+                                <select class="form-control">
+                                    <option selected>Cat</option>
+                                    <option>Dog</option>
+                                    <option>Bird</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Breed</label>
+                                <input type="text" class="form-control" value="Persian">
+                            </div>
+                            <div class="form-group">
+                                <label>Date of Birth</label>
+                                <input type="date" class="form-control" value="2021-03-15">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Owner Contact</label>
+                            <input type="text" class="form-control" value="Mrs. Johnson - (555) 987-6543">
+                        </div>
+                    </form>
+                </div>
+
+                <div id="history-tab" class="tab-content">
+                    <div class="history-timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">Dec 15, 2024</div>
+                            <div class="timeline-content">
+                                <h4>Annual Vaccination</h4>
+                                <p>Administered rabies vaccine. Pet is in excellent health.</p>
+                                <p><strong>Veterinarian:</strong> Dr. Smith</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">Jun 10, 2024</div>
+                            <div class="timeline-content">
+                                <h4>Routine Checkup</h4>
+                                <p>General health examination. Weight: 4.2kg. All vital signs normal.</p>
+                                <p><strong>Veterinarian:</strong> Dr. Williams</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="prescriptions-tab" class="tab-content">
+                    <div class="prescriptions-section">
+                        <button class="btn btn-primary mb-3" onclick="openModal('add-prescription-modal')">
+                            <i class="fas fa-plus"></i> Add Prescription
+                        </button>
+                        <table class="prescriptions-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Medication</th>
+                                    <th>Dosage</th>
+                                    <th>Quantity</th>
+                                    <th>Instructions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Dec 15, 2024</td>
+                                    <td>Amoxicillin</td>
+                                    <td>50mg</td>
+                                    <td>14 tablets</td>
+                                    <td>Twice daily with food</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" onclick="closeModal('patient-detail-modal')">Close</button>
+                <button class="btn btn-primary">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
